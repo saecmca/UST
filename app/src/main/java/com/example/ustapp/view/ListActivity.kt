@@ -2,6 +2,7 @@ package com.example.ustapp.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -41,9 +42,12 @@ class ListActivity : AppCompatActivity() {
         viewModelFactory = ViewModelFactory { viewModelProvider.get() }
         postViewModel.usersLiveData.observe(this, Observer { users ->
             if(users!=null) {
+                binding.nodata.visibility= View.GONE
                 adapter = PostListAdapter(users as ArrayList<Post>)
                 binding.rclview.layoutManager = LinearLayoutManager(this)
                 binding.rclview.adapter = adapter
+            }else{
+                binding.nodata.visibility= View.VISIBLE
             }
         })
 
