@@ -12,7 +12,7 @@ data class Post(
     val date: String,
     val image: String,
     val desc: String,
-    val flag:Boolean
+    var flag:Boolean
 )
 
 @Database(entities = [Post::class], version = 1)

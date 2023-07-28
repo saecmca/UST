@@ -20,7 +20,7 @@ object AppModule {
     fun provideDatabase(application: Application): MyDatabase {
         return Room.databaseBuilder(
             application,
-            MyDatabase::class.java, "my-database"
+            MyDatabase::class.java, "AppDbb"
         ).build()
     }
 
@@ -42,7 +42,7 @@ object AppModule {
 @Component(modules = [AppModule::class])
 interface AppComponent {
     fun inject(activity: ListActivity)
-    fun inject(activity: PostViewModel)
+    fun inject(postViewModel: PostViewModel)
     //fun inject(activity: PostActivity)
     // Add more injection methods if needed for other classes
 }

@@ -22,23 +22,34 @@ class PostListAdapter(private val dataList: ArrayList<Post>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(dataList[position])
-        val data=dataList.get(position)
-        holder.binding.tvtitle.text=data.title
-        holder.binding.tvdate.text=data.date
-        holder.binding.tvcaption.text=data.desc
-        val file=File(data.image)
+        val data = dataList.get(position)
+        holder.binding.tvtitle.text = data.title
+        holder.binding.tvdate.text = data.date
+        holder.binding.tvcaption.text = data.desc
+        val file = File(data.image)
         val imgBitmap = BitmapFactory.decodeFile(file.absolutePath)
+        if (file.exists()) {
+            holder.binding.imageview.setImageURI(Uri.fromFile(file))
+        }
 
-         holder.binding.imageview.setImageURI(Uri.fromFile(file))
-        if(data.flag)
+        if (data.flag)
             holder.binding.ivheart.setImageResource(R.drawable.heart_fill)
         else holder.binding.ivheart.setImageResource(R.drawable.heart)
 
+        holder.binding.ivheart.setOnClickListener {
+            if (data.flag) {
+                data.flag = false
+            } else {
+                data.flag = true
+            }
+            notifyDataSetChanged()
+        }
     }
 
     override fun getItemCount(): Int {
         return dataList.size
     }
+
     inner class MyViewHolder
         (val binding: ListAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Post) {

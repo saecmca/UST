@@ -11,8 +11,8 @@ import javax.inject.Inject
 
 class PostViewModel @Inject constructor(private val postRepository: PostRepository) : ViewModel() {
 
-    private val _usersLiveData = MutableLiveData<ArrayList<Post>>()
-    val usersLiveData: LiveData<ArrayList<Post>> = _usersLiveData
+    private val _usersLiveData = MutableLiveData<List<Post>>()
+    val usersLiveData: LiveData<List<Post>> = _usersLiveData
 
     fun getUsers() {
         viewModelScope.launch {

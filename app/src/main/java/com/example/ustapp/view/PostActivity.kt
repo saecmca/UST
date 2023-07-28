@@ -1,8 +1,10 @@
 package com.example.ustapp.view
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -10,6 +12,8 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.ustapp.dao.Post
 import com.example.ustapp.databinding.ActivityPostBinding
 import com.example.ustapp.viewmodel.PostViewModel
@@ -35,13 +39,22 @@ class PostActivity : AppCompatActivity() {
             showDatePicker()
         }
         binding.ivcamera.setOnClickListener {
-            pickImage()
+            if(allPermissionsGranted()) {
+                pickImage()
+            }else  ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
         binding.post.setOnClickListener {
             save()
         }
     }
 
+    private val REQUEST_CODE_PERMISSIONS = 20
+    private val REQUIRED_PERMISSIONS = arrayOf(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
     fun save() {
         if (TextUtils.isEmpty(binding.edtitle.text.toString())) {
             Toast.makeText(application, "Please Enter Title", Toast.LENGTH_SHORT).show()
@@ -51,7 +64,7 @@ class PostActivity : AppCompatActivity() {
             Toast.makeText(application, "Please Pick the image", Toast.LENGTH_SHORT).show()
         } else {
             val post = Post(
-                1,
+                binding.edtitle.getTag(binding.edtitle.id).toString().toInt(),
                 binding.edtitle.text.toString(),
                 binding.edDate.text.toString(),
                 imagePath,
