@@ -3,4 +3,3 @@
 2. List out the post from Room Database.
 
 ![ScreenShot](https://raw.github.com/saecmca/UST/main/image.png)
-![ScreenShot](https://raw.github.com/saecmca/UST/main/add.jpg)
