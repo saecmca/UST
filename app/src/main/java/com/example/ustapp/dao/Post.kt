@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Entity(tableName = "post")
 data class Post(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     val title: String,
     val date: String,
     val image: String,

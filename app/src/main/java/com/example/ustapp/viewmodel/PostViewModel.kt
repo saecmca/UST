@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ustapp.dao.Post
-import com.example.ustapp.repositry.PostRepository
-import kotlinx.coroutines.launch
+import com.example.ustapp.dao.PostDAO
+ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PostViewModel @Inject constructor(private val postRepository: PostRepository) : ViewModel() {
+class PostViewModel @Inject constructor(private val postRepository: PostDAO) : ViewModel() {
 
     private val _usersLiveData = MutableLiveData<List<Post>>()
     val usersLiveData: LiveData<List<Post>> = _usersLiveData
@@ -28,3 +28,5 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
         }
     }
 }
+
+

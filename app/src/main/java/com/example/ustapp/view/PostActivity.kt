@@ -11,28 +11,47 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.ustapp.adapter.PostListAdapter
 import com.example.ustapp.dao.Post
 import com.example.ustapp.databinding.ActivityPostBinding
+import com.example.ustapp.module.AppModule
+import com.example.ustapp.repositry.DaggerAppComponent
+import com.example.ustapp.repositry.ViewModelFactory
 import com.example.ustapp.viewmodel.PostViewModel
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
+import javax.inject.Provider
 
 
 class PostActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPostBinding
     var imagePath = ""
-    lateinit var postViewModel: PostViewModel
+    @Inject
+    lateinit var viewModelProvider: Provider<PostViewModel>
+
+    private lateinit var viewModelFactory: ViewModelFactory
+    private val postViewModel: PostViewModel by viewModels { viewModelFactory }
+    lateinit var adapter: PostListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val appComponent = DaggerAppComponent.builder()
+            .appModule(AppModule(application))
+            .build()
+        appComponent.inject(this)
+        viewModelFactory = ViewModelFactory { viewModelProvider.get() }
+
         val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("DD MMM YYYY", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd MMM YYYY", Locale.getDefault())
         val currentDate = dateFormat.format(calendar.time)
         binding.edDate.setText(currentDate.toString())
         binding.edDate.setOnClickListener {
@@ -63,14 +82,17 @@ class PostActivity : AppCompatActivity() {
         } else if (TextUtils.isEmpty(imagePath)) {
             Toast.makeText(application, "Please Pick the image", Toast.LENGTH_SHORT).show()
         } else {
+            val test=System.currentTimeMillis()
             val post = Post(
-                binding.edtitle.getTag(binding.edtitle.id).toString().toInt(),
+                test,
                 binding.edtitle.text.toString(),
                 binding.edDate.text.toString(),
                 imagePath,
                 binding.edcaption.text.toString(),false
             )
             postViewModel.insertUser((post))
+            Toast.makeText(applicationContext,"Successfully inserted",Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 

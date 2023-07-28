@@ -13,36 +13,23 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+// AppModule.kt
 @Module
-object AppModule {
+class AppModule(private val application: Application) {
     @Provides
-    @Singleton
-    fun provideDatabase(application: Application): MyDatabase {
+    fun provideApplication(): Application = application
+
+    @Provides
+    fun provideAppDatabase(application: Application): MyDatabase {
         return Room.databaseBuilder(
             application,
-            MyDatabase::class.java, "AppDbb"
+            MyDatabase::class.java,
+            "app_database"
         ).build()
     }
 
     @Provides
-    @Singleton
-    fun provideUserDao(database: MyDatabase): PostDAO {
-        return database.postDao()
+    fun provideUserDao(appDatabase: MyDatabase): PostDAO {
+        return appDatabase.postDao()
     }
-
-    @Provides
-    @Singleton
-    fun provideUserRepository(postDao: PostDAO): PostRepository {
-        return PostRepository(postDao)
-    }
-}
-
-// Create a Component to connect the modules and the classes that need the dependencies
-@Singleton
-@Component(modules = [AppModule::class])
-interface AppComponent {
-    fun inject(activity: ListActivity)
-    fun inject(postViewModel: PostViewModel)
-    //fun inject(activity: PostActivity)
-    // Add more injection methods if needed for other classes
 }
