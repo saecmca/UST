@@ -2,4 +2,4 @@
 1. Add post to the Room database.
 2. List out the post from Room Database.
 
-![Alt text](/relative/photo_2023-07-28_08-00-22.jpg/to/img.jpg?raw=true "Optional Title")
+![ScreenShot](https://raw.github.com/saecmca/UST/main/image.png)
