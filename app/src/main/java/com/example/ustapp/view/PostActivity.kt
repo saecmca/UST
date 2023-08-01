@@ -25,6 +25,7 @@ import com.example.ustapp.viewmodel.PostViewModel
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Provider
@@ -110,9 +111,9 @@ class PostActivity : AppCompatActivity() {
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                val myFormat = "dd MMM YYYY"
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                binding.edDate.setText(sdf.format(cal.time))
+                var dt=Date()
+                val dat=dt.dateForamt(cal.time.toString())
+                binding.edDate.setText(dat)
             },
             year,
             month,
@@ -159,5 +160,10 @@ class PostActivity : AppCompatActivity() {
             result = "Not found"
         }
         return result
+    }
+    fun Date.dateForamt(dt:String):String{
+        val myFormat = "dd MMM YYYY"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        return sdf.format(dt)
     }
 }

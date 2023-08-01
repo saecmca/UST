@@ -27,6 +27,7 @@ class PostViewModel @Inject constructor(private val postRepository: PostDAO) : V
             getUsers()
         }
     }
+
 }
 
 
